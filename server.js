@@ -16,7 +16,7 @@ const MONGODB_URI = process.env.MONGODB_URI
 // --- cors ---
 app.use(cors({credentials: true, origin: process.env.ORIGIN || 'http://localhost:3000'}))
 
-//  --- mongoose ---
+// --- mongoose ---
         //1. connect to db
 mongoose.connect(MONGODB_URI)
         //2. define your schema
@@ -34,13 +34,25 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: false}))
 
 app.get('/', (req, res) => {
-  res.send('Hello Hugo!')
+        res.send('Our backend is live!')
 })
 
+// --- routes ---
+app.post ('create-user', (req, res) => {
+        const {name, email, password} = req.body
 
+        UserModel.create({name, email, password})
 
-
-
+        .then((response) => {
+                res.status(200).json(response)
+        })
+        .catch((err) => {
+                res.status(500).json({
+                        error: 'Something went wrong',
+                        message: err
+                })
+        })
+})
 
 
 
