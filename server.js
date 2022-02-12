@@ -21,9 +21,19 @@ app.use(cors({credentials: true, origin: process.env.ORIGIN || 'http://localhost
 mongoose.connect(MONGODB_URI)
         //2. define your schema
 let UserSchema = new mongoose.Schema({
-        name: String,
-        email: String,
-        password: String,
+        name: {
+                type: String,
+                required: [true, 'Please add a name']
+        },
+        email: {
+                type:  String,
+                required: [true, 'Please add an email'],
+                unique: true
+        },
+        password: {
+                type: String,
+                required: true
+        }
 })
         //3. define your model
 let UserModel = mongoose.model('UserModel', UserSchema)
@@ -38,7 +48,7 @@ app.get('/', (req, res) => {
 })
 
 // --- routes ---
-app.post ('create-user', (req, res) => {
+app.post ('/create-user', (req, res) => {
         const {name, email, password} = req.body
 
         UserModel.create({name, email, password})
@@ -53,8 +63,6 @@ app.post ('create-user', (req, res) => {
                 })
         })
 })
-
-
 
 // listen method will connect our app to the specified port
 app.listen(port, () => {
