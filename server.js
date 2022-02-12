@@ -20,7 +20,8 @@ app.use(cors({credentials: true, origin: process.env.ORIGIN || 'http://localhost
         //1. connect to db
 mongoose.connect(MONGODB_URI)
         //2. define your schema
-let UserSchema = new mongoose.Schema({
+let UserSchema = new mongoose.Schema(
+{
         name: {
                 type: String,
                 required: [true, 'Please add a name']
@@ -34,6 +35,9 @@ let UserSchema = new mongoose.Schema({
                 type: String,
                 required: true
         }
+},
+{
+        timestamps: true
 })
         //3. define your model
 let UserModel = mongoose.model('UserModel', UserSchema)
