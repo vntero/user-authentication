@@ -1,0 +1,30 @@
+{
+  "name": "user-authentication",
+  "version": "1.0.0",
+  "description": "user authentication built from scratch with express.js",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon /Users/vntero/Desktop/Projects/user-authentication/server/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vntero/user-authentication.git"
+  },
+  "author": "vntero",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vntero/user-authentication/issues"
+  },
+  "homepage": "https://github.com/vntero/user-authentication#readme",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "body-parser": "^1.19.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.0",
+    "express": "^4.17.2",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.2.1",
+    "nodemon": "^2.0.15"
+  }
+}
