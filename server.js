@@ -13,7 +13,7 @@ const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
 const MONGODB_URI = process.env.MONGODB_URI
         //npm i bcrypt
-const bcrypt = require('bcryptjs')
+const bcrypt = require('bcrypt')
 
 // --- cors ---
 app.use(cors({credentials: true, origin: process.env.ORIGIN || 'http://localhost:3000'}))
@@ -33,7 +33,7 @@ let UserSchema = new mongoose.Schema(
                 required: [true, 'Please add an email'],
                 unique: true
         },
-        password: {
+        hashedPassword: {
                 type: String,
                 required: true
         }
@@ -56,10 +56,14 @@ app.get('/', (req, res) => {
 // --- routes ---
 app.post ('/create-user', (req, res) => {
         const {name, email, password} = req.body
-
-        UserModel.create({name, email, password})
-
+        //password encryption
+                // salt is a random string that makes the hash unpredictable
+                let salt = bcrypt.genSaltSync(10)
+                // hashing algorithms turn a plain text password into a new fixed-length string called a hash
+                let hash = bcrypt.hashSync(password, salt)
+        UserModel.create({name, email, hashedPassword: hash})
         .then((response) => {
+                response.passwordHash = "***";
                 res.status(200).json(response)
         })
         .catch((err) => {
