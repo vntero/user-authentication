@@ -12,6 +12,8 @@ const mongoose = require('mongoose')
         // npm i body-parser
 const bodyParser = require('body-parser')
 const MONGODB_URI = process.env.MONGODB_URI
+        //npm i bcrypt
+const bcrypt = require('bcryptjs')
 
 // --- cors ---
 app.use(cors({credentials: true, origin: process.env.ORIGIN || 'http://localhost:3000'}))
@@ -68,7 +70,9 @@ app.post ('/create-user', (req, res) => {
         })
 })
 
-// listen method will connect our app to the specified port
+app.post
+
+// --- listen method will connect our app to the specified port ---
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
+  console.log(`User authentication (server) is listening on port ${port}`)
 })
