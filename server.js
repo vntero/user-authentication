@@ -55,6 +55,7 @@ app.get('/', (req, res) => {
 
 // --- routes ---
 app.post ('/create-user', (req, res) => {
+        //variables being grabbed and deconstructed from the client-side
         const {name, email, password} = req.body
         //password encryption
                 // salt is a random string that makes the hash unpredictable
@@ -63,7 +64,7 @@ app.post ('/create-user', (req, res) => {
                 let hash = bcrypt.hashSync(password, salt)
         UserModel.create({name, email, hashedPassword: hash})
         .then((response) => {
-                response.passwordHash = "***";
+                response.hashedPassword = "***";
                 res.status(200).json(response)
         })
         .catch((err) => {
@@ -74,7 +75,16 @@ app.post ('/create-user', (req, res) => {
         })
 })
 
-app.post
+app.post ('verify-user', (req, res) => {
+        //variables being grabbed and deconstructed from the client-side
+        const {email, password} = req.body
+        //find user in our database
+        UserModel.findOne({email})
+        .then((userData) => {
+                //if the email exists, check password
+                let doesItMatch = bcrypt.compareSync(password, userData.hashedPassword)
+        })
+})
 
 // --- listen method will connect our app to the specified port ---
 app.listen(port, () => {
