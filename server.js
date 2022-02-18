@@ -14,6 +14,7 @@ const bodyParser = require('body-parser')
 const MONGODB_URI = process.env.MONGODB_URI
         //npm i bcrypt
 const bcrypt = require('bcrypt')
+        //npm i jsonwebtoken
 
 // --- cors ---
 app.use(cors({credentials: true, origin: process.env.ORIGIN || 'http://localhost:3000'}))
@@ -50,7 +51,7 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: false}))
 
 app.get('/', (req, res) => {
-        res.send('Our backend is live!')
+        res.send('Our server is live!')
 })
 
 // --- routes ---
@@ -62,6 +63,7 @@ app.post ('/create-user', (req, res) => {
                 let salt = bcrypt.genSaltSync(10)
                 // hashing algorithms turn a plain text password into a new fixed-length string called a hash
                 let hash = bcrypt.hashSync(password, salt)
+                // a simpler way of hashing our password would be to skip the SALT creation and simply add the number of rounds in the HASH at the end 'let hash = bcrypt.hashSync(password, 10)'
         UserModel.create({name, email, hashedPassword: hash})
         .then((response) => {
                 response.hashedPassword = "***";
@@ -75,15 +77,12 @@ app.post ('/create-user', (req, res) => {
         })
 })
 
-app.post ('verify-user', (req, res) => {
+app.post ('/verify-user', (req, res) => {
         //variables being grabbed and deconstructed from the client-side
         const {email, password} = req.body
         //find user in our database
-        UserModel.findOne({email})
-        .then((userData) => {
-                //if the email exists, check password
-                let doesItMatch = bcrypt.compareSync(password, userData.hashedPassword)
-        })
+        console.log(password)
+        
 })
 
 // --- listen method will connect our app to the specified port ---
