@@ -81,8 +81,19 @@ app.post ('/verify-user', (req, res) => {
         //variables being grabbed and deconstructed from the client-side
         const {email, password} = req.body
         //find user in our database
-        console.log(password)
-        
+        UserModel.findOne({email})
+        .then((userData) => {
+                //if the email exists, check password
+                let doesItMatch = bcrypt.compareSync(password, userData.hashedPassword)
+                //if it matches
+                if (doesItMatch) {
+                        res.send('Success')
+                        console.log('Passwords match!')
+                } else {
+                        res.send('Not allowed')
+                        console.log('Try again!!!')
+                }
+        })
 })
 
 // --- listen method will connect our app to the specified port ---
